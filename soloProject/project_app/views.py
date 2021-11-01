@@ -58,5 +58,6 @@ def create(request):
         description = request.POST['description'],
         hours = request.POST['hours'],
         due = request.POST['due'],
+        creator = User.objects.get(id=request.session['user_id'])
     )
     return redirect('/success')

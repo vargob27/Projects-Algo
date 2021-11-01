@@ -28,10 +28,28 @@
                 </form>
 <hr>
 {% if tasks %}
-<ul>
-    {% for task in tasks %}
-    <li>{{task.task_name}}</li>
-    <li>{{task.description}}</li>
-    {% endfor %}
-</ul>
+<table class="table table-dark">
+    <thead>
+        <tr>
+            <th>Task</th>
+            <th>Description</th>
+            <th>Hours</th>
+            <th>Due Date</th>
+            <th>Submitted By</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for task in tasks %}
+        <tr>
+            <td>{{task.task_name}}</td>
+            <td>{{task.description}}</td>
+            <td>{{task.hours}}</td>
+            <td>{{task.due}}</td>
+            <td>{{task.creator}}</td>
+            <td>ASSIGN | DROP</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 {% endif %}
