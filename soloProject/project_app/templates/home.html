@@ -1,1 +1,37 @@
 <h1>Wecome {{user.last_name}}, {{user.first_name}}</h1>
+<hr>
+<h1>Create Ticket</h1>
+                <form action="/createtask" method="POST">
+                    {% csrf_token %}
+                    <table>
+                        <tr>
+                            <td><label class="form-label" for="task_name">Task Name</label></td>
+                            <td><input type="text" name="task_name" id="" class="form-control"></td>
+                        </tr>
+                        <tr>
+                            <td><label class="form-label" for="description">Descriptiom</label></td>
+                            <td><input type="text" name="description" id="" class="form-control"></td>
+                        </tr>
+                        <tr>
+                            <td><label class="form-label" for="hours">Projected Hours</label></td>
+                            <td><input type="number" name="hours" id="" class="form-control"></td>
+                        </tr>
+                        <tr>
+                            <td><label class="form-label" for="due">Due Date</label></td>
+                            <td><input type="date" name="due" id="" class="form-control"></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><input type="submit" value="Register"></td>
+                        </tr>
+                    </table>
+                </form>
+<hr>
+{% if tasks %}
+<ul>
+    {% for task in tasks %}
+    <li>{{task.task_name}}</li>
+    <li>{{task.description}}</li>
+    {% endfor %}
+</ul>
+{% endif %}

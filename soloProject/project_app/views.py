@@ -51,3 +51,12 @@ def login(request):
 def logout(request):
     request.session.flush()
     return redirect('/')
+
+def create(request):
+    Task.objects.create(
+        task_name = request.POST['task_name'],
+        description = request.POST['description'],
+        hours = request.POST['hours'],
+        due = request.POST['due'],
+    )
+    return redirect('/success')

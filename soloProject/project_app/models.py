@@ -82,6 +82,7 @@ class Task(models.Model):
     hours = models.CharField(max_length=3)
     due = models.DateField()
     assigned = models.ManyToManyField(User, related_name='assigned_tasks')
+    creator = models.ForeignKey(User, related_name='tickets', on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     objects = TaskManager()
