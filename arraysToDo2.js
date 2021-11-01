@@ -11,7 +11,7 @@ function reverseArr(arr) {
     console.log(arr);
     return arr;
 }
-var test = [1,3,5,7,9,11];
+var test = [1, 3, 5, 7, 9, 11];
 // reverseArr(test);
 
 // Rotate
@@ -53,7 +53,7 @@ function rotate(arr, offset) {
         for (var i = 0; i < actual; i++) {
             var temp = arr[arr.length - 1];
             for (var i2 = arr.length - 2; i2 >= 0; i2--) {
-                arr[i2+1] = arr[i2];
+                arr[i2 + 1] = arr[i2];
             }
             arr[0] = temp;
         }
@@ -68,13 +68,43 @@ function rotate(arr, offset) {
     }
     return arr;
 }
-var test2 = [1,3,5,7];
-console.log(rotate(test2, -1));
+var test2 = [1, 3, 5, 7];
+// console.log(rotate(test2, -1));
 
 // Filter Range
 // Alan is good at breaking secret codes. One method is to eliminate values that lie outside of a specific known range. Given arr and values min and max, retain only the array values between min and max. Work in-place: return the array you are given, with values in original order. No built-in array functions.
-
+function filterRange(arr, min, max) {
+    for (i = 0; i < arr.length; i++) {
+        if (arr[i] < min || arr[i] > max) {
+            // arr[i] = null;
+            for (i2 = i + 1; i2 < arr.length; i2++) {
+                arr[i2 - 1] = arr[i2];
+            }
+            arr.length--;
+            i--;
+        }
+    }
+    return arr;
+}
+// console.log(filterRange(test2, 3, 5));
 
 // Concat
-// Given a numerical array, reverse the order of values, in-place. The reversed array should have the same length, with existing elements moved to other indices so that order of elements is reversed. Working 'in-place' means that you cannot use a second 
-// array – move values within the array that you are given. As always, do not use built-in array functions such as splice().
+// Replicate JavaScript's concat(). Create a standalone function that accepts two arrays. Return a new array containing the first array's elements, followed by the second array's elements. Do not alter the original arrays. Ex.: arrConcat( ['a','b'], [1,2] ) should return new array ['a','b',1,2].
+function concat(arr1, arr2) {
+    // output = [...arr1, ...arr2];
+    // return output;
+    output = [];
+    let counter = 0;
+    for (i = 0; i < arr1.length; i++) {
+        output[counter] = arr1[i];
+        counter++;
+    }
+    for (i2 = 0; i2<arr2.length; i2++) {
+        output[counter] = arr2[i2];
+        counter++;
+    }
+    return output;
+}
+var con1 = [2,4,6];
+var con2 = [69, 420];
+console.log(concat(con1, con2));
