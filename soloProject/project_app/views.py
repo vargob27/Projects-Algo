@@ -10,9 +10,10 @@ def success(request):
     if 'user_id' not in request.session:
         return redirect('/')
     this_user = User.objects.filter(id=request.session['user_id'])
+    sorted_tasks = Task.objects.all().order_by('due')
     context = {
         'user': this_user[0],
-        'tasks': Task.objects.all()
+        'tasks': sorted_tasks
     }
     return render(request, 'home.html', context)
 
@@ -61,3 +62,18 @@ def create(request):
         creator = User.objects.get(id=request.session['user_id'])
     )
     return redirect('/success')
+
+def delete_task(request, task_id):
+    to_delete = Task.objects.get(id=task_id)
+    if request.session['user_id'] != to_delete.creator.id:
+        messages.error(request, 'You are not the creator of the task you are trying to delete!')
+        return redirect('/success')
+    to_delete.delete()
+    return redirect('/success')
+
+def task(request, task_id):
+    context = {
+        'user': User.objects.get(id=request.session['user_id']),
+        'task': Task.objects.get(id=task_id)
+    }
+    return render(request, 'task.html', context)

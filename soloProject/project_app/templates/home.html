@@ -1,55 +1,90 @@
-<h1>Wecome {{user.last_name}}, {{user.first_name}}</h1>
-<hr>
-<h1>Create Ticket</h1>
-                <form action="/createtask" method="POST">
-                    {% csrf_token %}
-                    <table>
-                        <tr>
-                            <td><label class="form-label" for="task_name">Task Name</label></td>
-                            <td><input type="text" name="task_name" id="" class="form-control"></td>
-                        </tr>
-                        <tr>
-                            <td><label class="form-label" for="description">Descriptiom</label></td>
-                            <td><input type="text" name="description" id="" class="form-control"></td>
-                        </tr>
-                        <tr>
-                            <td><label class="form-label" for="hours">Projected Hours</label></td>
-                            <td><input type="number" name="hours" id="" class="form-control"></td>
-                        </tr>
-                        <tr>
-                            <td><label class="form-label" for="due">Due Date</label></td>
-                            <td><input type="date" name="due" id="" class="form-control"></td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td><input type="submit" value="Register"></td>
-                        </tr>
-                    </table>
-                </form>
-<hr>
-{% if tasks %}
-<table class="table table-dark">
-    <thead>
-        <tr>
-            <th>Task</th>
-            <th>Description</th>
-            <th>Hours</th>
-            <th>Due Date</th>
-            <th>Submitted By</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for task in tasks %}
-        <tr>
-            <td>{{task.task_name}}</td>
-            <td>{{task.description}}</td>
-            <td>{{task.hours}}</td>
-            <td>{{task.due}}</td>
-            <td>{{task.creator}}</td>
-            <td>ASSIGN | DROP</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
-{% endif %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=<device-width>, initial-scale=1.0">
+    <title>Home</title>
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body>
+    <h1>Welcome {{user.last_name}}, {{user.first_name}}</h1>
+    <a class="btn btn-danger" href="/logout">Logout</a>
+    {% if messages %}
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+        </button>
+        <ul>
+            {% for message in messages %}
+            <li>{{message}}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+    <hr>
+    <h1>Create Ticket</h1>
+    <form action="/createtask" method="POST">
+        {% csrf_token %}
+        <table>
+            <tr>
+                <td><label class="form-label" for="task_name">Task Name</label></td>
+                <td><input type="text" name="task_name" id="" class="form-control"></td>
+            </tr>
+            <tr>
+                <td><label class="form-label" for="description">Descriptiom</label></td>
+                <td><input type="text" name="description" id="" class="form-control"></td>
+            </tr>
+            <tr>
+                <td><label class="form-label" for="hours">Projected Hours</label></td>
+                <td><input type="number" name="hours" id="" class="form-control"></td>
+            </tr>
+            <tr>
+                <td><label class="form-label" for="due">Due Date</label></td>
+                <td><input type="date" name="due" id="" class="form-control"></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><input type="submit" value="Register"></td>
+            </tr>
+        </table>
+    </form>
+    <hr>
+    {% if tasks %}
+    <table class="table table-dark">
+        <thead>
+            <tr>
+                <th>Task</th>
+                <th>Description</th>
+                <th>Hours</th>
+                <th>Due Date</th>
+                <th>Submitted By</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for task in tasks %}
+            <tr>
+                <td><a href="/task/{{task.id}}">{{task.task_name}}</a></td>
+                <td>{{task.description}}</td>
+                <td>{{task.hours}}</td>
+                <td>{{task.due}}</td>
+                <td>{{task.creator}}</td>
+                <td>ASSIGN | DROP
+                    {% if user.id == task.creator.id %}
+                    <a href="/{{task.id}}/delete">DELETE</a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+</body>
+
+</html>

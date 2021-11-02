@@ -21,55 +21,32 @@ var test = [1, 3, 5, 7, 9, 11];
 // Third: minimize memory usage. With no new array, handle arrays/shiftBys in the millions.
 // Fourth: minimize the touches of each element.
 function rotate(arr, offset) {
-    // if (offset > 0) {
-    //     for (i = 0; i < offset; i++) {
-    //         let temp = arr[arr.length -1];
-    //         for (i2 = arr.length - 2; i2 >= 0; i2--) {
-    //             arr[i2 + 1] = arr[i2];
-    //         }
-    //         arr[0] = temp;
-    //         console.log(arr);
-    //     }
-    //     return arr;
-    // } else {
-    //     let convert = offset + offset*2
-    //     for (i = 0; i < convert; i--) {
-    //         let temp = arr[0];
-    //         for (i2 = 1; i2 < arr.length; i2++) {
-    //             arr[i2-1] = arr[i2];
-    //         }
-    //         arr[arr.length-1] = temp;
-    //         console.log(arr);
-    //     }
-    //     return arr;
-    // }
-    var actual;
     if (offset > 0) {
-        actual = offset % arr.length;
-    } else {
-        actual = Math.abs(offset) % arr.length;
-    }
-    if (offset > 0) {
-        for (var i = 0; i < actual; i++) {
-            var temp = arr[arr.length - 1];
-            for (var i2 = arr.length - 2; i2 >= 0; i2--) {
+        for (i = 0; i < offset; i++) {
+            let temp = arr[arr.length -1];
+            for (i2 = arr.length - 2; i2 >= 0; i2--) {
                 arr[i2 + 1] = arr[i2];
             }
             arr[0] = temp;
+            // console.log(arr);
         }
+        return arr;
     } else {
-        for (var i = 0; i < actual; i++) {
-            var temp = arr[0];
-            for (var i2 = 1; i2 < arr.length; i2++) {
-                arr[i2 - 1] = arr[i2];
+        let convert = offset * -1
+        for (i = 0; i < convert; i++) {
+            let temp = arr[0];
+            for (i2 = 1; i2 < arr.length; i2++) {
+                arr[i2-1] = arr[i2];
             }
-            arr[arr.length - 1] = temp;
+            arr[arr.length-1] = temp;
+            // console.log(arr);
         }
+        return arr;
     }
-    return arr;
 }
 var test2 = [1, 3, 5, 7];
-// console.log(rotate(test2, -1));
+console.log(test2);
+console.log(rotate(test2, -1));
 
 // Filter Range
 // Alan is good at breaking secret codes. One method is to eliminate values that lie outside of a specific known range. Given arr and values min and max, retain only the array values between min and max. Work in-place: return the array you are given, with values in original order. No built-in array functions.
@@ -93,7 +70,8 @@ function filterRange(arr, min, max) {
 function concat(arr1, arr2) {
     // output = [...arr1, ...arr2];
     // return output;
-    output = [];
+    
+    let output = [];
     let counter = 0;
     for (i = 0; i < arr1.length; i++) {
         output[counter] = arr1[i];
