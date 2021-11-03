@@ -32,12 +32,25 @@ class SinglyLinkedList {
         }
         return this.head.val;
     }
+
+    display() {
+        // return a string containing all list values
+        let output = "";
+        let runner = this.head;
+        while (runner != null) {
+            output = output + runner.val + " -> ";
+            runner = runner.next;
+        }
+        output = output + "null";
+        return output;
+    }
 }
 
 var mySLL = new SinglyLinkedList();
 mySLL.addToFront(5);
 mySLL.addToFront(69);
 console.log(mySLL);
-console.log(mySLL.removeFront());
-console.log(mySLL);
-console.log(mySLL.front());
+// console.log(mySLL.removeFront());
+// console.log(mySLL);
+// console.log(mySLL.front());
+console.log(mySLL.display());
