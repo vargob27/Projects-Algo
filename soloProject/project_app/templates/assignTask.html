@@ -1,34 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     {% load static %}
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{task_name}}</title>
+    <title>Assign Task</title>
     <!-- CSS only -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
+
 <body>
     <a class="btn btn-info" href="/success">Home</a>
     <p>Task Name: {{task.task_name}}</p>
     <p>Description: {{task.description}}</p>
     <p>Hours: {{task.hours}}</p>
     <p>Due Date:{{task.due}}</p>
-    <p>Assigned to:
-        {% for user in task.assigned.all %}
-        <p>{{user.last_name}}, {{user.first_name}}</p>
-        {% endfor %}
-    </p>
+    <p>Assigned to: {{task.assigned}}</p>
     <p>Creator: {{task.creator}}</p>
     <p>Created at: {{task.created_at}}</p>
     <p>Updated at: {{task.updated_at}}</p>
-    {% for user in task.assigned.all %}
-        {% if user.id == loggedIn %}
-        <a class="btn btn-danger" href="/drop/{{task.id}}">Drop Task</a>
-        {% endif %}
-    {% endfor %}
+
+    <form action="/task/{{task.id}}/assign" method="POST">
+        {% csrf_token %}
+        <table>
+            <td><label class="form-label" for="email">User</label></td>
+            <td>
+                <select name="email" id="" class="form-control">
+                    {% for user in users %}
+                    <option value="{{user.email}}">{{user.last_name}}, {{user.first_name}}</option>
+                    {% endfor %}
+                </select>
+            </td>
+            </tr>
+            <tr>
+                <td><input type="submit" value="Assign"></td>
+            </tr>
+        </table>
+    </form>
 </body>
+
 </html>

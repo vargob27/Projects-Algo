@@ -46,6 +46,18 @@ class UserManager(models.Manager):
         elif bcrypt.checkpw(post_data['password'].encode(), existing_user[0].password.encode()) != True:
             errors['nonmatch'] = "Email and password do not match"
         return errors
+    
+    def update_validator(self, post_data):
+        errors = {}
+        if len(post_data['first_name']) == 0:
+            errors['first_name'] = "Please enter a first name!"
+        if len(post_data['last_name']) == 0:
+            errors['last_name'] = "Please enter a last name!"
+        if len(post_data['email']) == 0:
+            errors['email'] = "Enter email"
+        elif not EMAIL_REGEX.match(post_data['email']):
+            errors['email'] = "Must be a valid email"
+        return errors
 
 class TaskManager(models.Manager):
     def task_validator(self, post_data):
