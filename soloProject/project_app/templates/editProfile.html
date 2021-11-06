@@ -14,7 +14,13 @@
 </head>
 
 <body>
-    <a class="btn btn-info" href="/success">Home</a>
+    <div class="row">
+        <h1 id="title">Tickety</h1>
+    </div>
+    <div class="row">
+        <div class="col-1"><a class="btn btn-info" id="space" href="/success">Home</a></div>
+        <div class="col-1 offset-10"><a class="btn btn-secondary" href="/logout">Logout</a></div>
+    </div>
     <h1>Edit Profile</h1>
     <form action="/user/{{user.id}}/edit" method="POST">
         {% csrf_token %}

@@ -73,6 +73,27 @@ def delete_task(request, task_id):
     to_delete.delete()
     return redirect('/success')
 
+def edit_task(request, task_id):
+    context = {
+        'task': Task.objects.get(id=task_id)
+    }
+    return render(request, 'editTask.html', context)
+
+def update_task(request, task_id):
+    to_update = Task.objects.get(id=task_id)
+    to_update.task_name = request.POST['task_name']
+    to_update.description = request.POST['description']
+    to_update.hours = request.POST['hours']
+    to_update.due = request.POST['due']
+    to_update.save()
+    return redirect('/success')
+
+def complete_task(request, task_id):
+    task = Task.objects.get(id=task_id)
+    task.completed = True
+    task.save()
+    return redirect('/success')
+
 def task(request, task_id):
     context = {
         'user': User.objects.get(id=request.session['user_id']),

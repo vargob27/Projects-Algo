@@ -14,9 +14,12 @@
 </head>
 
 <body>
-    <div class="container">
+    <div class="row">
+        <h1 id="title">Tickety</h1>
+    </div>
+    <div id="login">
         <div class="row">
-            <div class="col-6">
+            <div class="col-3 offset-3">
                 <h1>Register</h1>
                 <form action="/register" method="POST">
                     {% csrf_token %}

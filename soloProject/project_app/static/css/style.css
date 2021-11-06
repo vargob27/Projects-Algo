@@ -5,4 +5,30 @@ body {
     background-color: #cccccc;
     background-repeat: no-repeat;
     background-size: cover;
+    margin: 1%;
+}
+#space {
+    margin-bottom: 50px;
+}
+.bold {
+    font-weight: bolder;
+    font-size: larger;
+    text-align: center;
+    margin-top: 1%;
+}
+.normal {
+    text-align: center;
+}
+.opac {
+    background: rgba(92, 92, 92, 0.3);
+}
+#title {
+    text-shadow: 2px 2px 5px darkslateblue;
+    text-align: center;
+}
+#login {
+    margin-top: 3%;
+}
+#center {
+    text-align: center;
 }

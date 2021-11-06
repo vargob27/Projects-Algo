@@ -15,5 +15,7 @@ urlpatterns = [
     path('user/edit/<int:user_id>', views.edit_profile),
     path('user/<int:user_id>/edit', views.update_profile),
     path('drop/<int:task_id>', views.drop_task),
-    path('test', views.test)
+    path('task/update/<int:task_id>', views.edit_task),
+    path('task/<int:task_id>/update', views.update_task),
+    path('task/<int:task_id>/complete', views.complete_task)
 ]
