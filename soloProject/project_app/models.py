@@ -73,6 +73,28 @@ class TaskManager(models.Manager):
             errors['task_name'] = "Please enter a description for the task"
         if len(existing_task) > 0:
             errors['duplicate'] = "Task name already in use"
+        if post_data['due'] == '':
+            errors['date'] = "Please enter a Due Date"
+        return errors
+
+    def update_task_validator(self, post_data):
+        errors = {}
+        existing_task = Task.objects.filter(task_name=post_data['task_name'])
+        if len(existing_task) > 1:
+            errors['duplicate'] = "Task name already in use"
+        if len(post_data['task_name']) < 2:
+            errors['task_name'] = "Task name must be 2 characters or more"
+        if len(post_data['description']) < 2:
+            errors['description'] = "Description must be at least 2 characters"
+        if len(post_data['task_name']) == 0:
+            errors['task_name'] = "Please enter a name for the task"
+        if len(post_data['description']) == 0:
+            errors['task_name'] = "Please enter a description for the task"
+        if post_data['due'] == '':
+            errors['date'] = "Please enter a Due Date"
+        return errors
+
+
 
 class User(models.Model):
     first_name = models.CharField(max_length=255)

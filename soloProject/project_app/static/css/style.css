@@ -32,3 +32,8 @@ body {
 #center {
     text-align: center;
 }
+#grey {
+    color: white;
+    font-weight: bolder;
+    text-shadow: 2px 2px 5px gray;
+}

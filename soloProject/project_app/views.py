@@ -19,6 +19,17 @@ def success(request):
     }
     return render(request, 'home.html', context)
 
+def completed(request):
+    this_user = User.objects.filter(id=request.session['user_id'])
+    sorted_tasks = Task.objects.all().order_by('due')
+    context = {
+        'user': this_user[0],
+        'tasks': sorted_tasks,
+        'assignedTasks': this_user[0].assigned_tasks.all(),
+        'users': User.objects.all()
+    }
+    return render(request, 'completed.html', context)
+
 def register(request):
     if request.method == 'POST':
         errors = User.objects.registration_validator(request.POST)
@@ -56,6 +67,11 @@ def logout(request):
     return redirect('/')
 
 def create(request):
+    errors = Task.objects.task_validator(request.POST)
+    if len(errors) != 0:
+            for key, value in errors.items():
+                messages.error(request, value)
+            return redirect('/success')
     Task.objects.create(
         task_name = request.POST['task_name'],
         description = request.POST['description'],
@@ -80,6 +96,11 @@ def edit_task(request, task_id):
     return render(request, 'editTask.html', context)
 
 def update_task(request, task_id):
+    errors = Task.objects.update_task_validator(request.POST)
+    if len(errors) != 0:
+            for key, value in errors.items():
+                messages.error(request, value)
+            return redirect(f'/task/update/{task_id}')
     to_update = Task.objects.get(id=task_id)
     to_update.task_name = request.POST['task_name']
     to_update.description = request.POST['description']
@@ -98,7 +119,8 @@ def task(request, task_id):
     context = {
         'user': User.objects.get(id=request.session['user_id']),
         'task': Task.objects.get(id=task_id),
-        'loggedIn': request.session['user_id']
+        'loggedIn': request.session['user_id'],
+        'users': User.objects.all()
     }
     return render(request, 'task.html', context)
 
@@ -120,9 +142,10 @@ def user_profile(request, user_id):
     user = User.objects.get(id=user_id)
     context = {
         'user': User.objects.get(id=user_id),
-        'loggedIn': request.session['user_id'],
+        'loggedIn': User.objects.get(id=request.session['user_id']),
         'assignedTasks': user.assigned_tasks.all(),
-        'userTickets': user.tickets.all()
+        'userTickets': user.tickets.all(),
+        'users': User.objects.all()
     }
     return render(request, 'profile.html', context)
 

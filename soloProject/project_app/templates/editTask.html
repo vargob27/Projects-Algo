@@ -23,6 +23,17 @@
         <div class="col-1"><a class="btn btn-info" id="space" href="/success">Home</a></div>
         <div class="col-1 offset-10"><a class="btn btn-secondary" href="/logout">Logout</a></div>
     </div>
+    {% if messages %}
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+        </button>
+        <ul>
+            {% for message in messages %}
+            <li>{{message}}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
     <h3 id="center">Edit Task</h3>
     <div class="col-3 offset-5">
         <form action="/task/{{task.id}}/update" method="POST">
