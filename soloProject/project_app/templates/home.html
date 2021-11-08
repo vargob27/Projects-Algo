@@ -19,8 +19,8 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
-            <a class="navbar-brand">
-                <img src="https://t4.ftcdn.net/jpg/04/15/08/91/360_F_415089176_JDSJLUPmjw3w5vZ6MUQ9U0ZbTmnGioIr.jpg" alt="" width="50" height="54" class="d-inline-block">
+            <a class="navbar-brand" id="grey">
+                <img src="https://t3.ftcdn.net/jpg/03/64/50/28/240_F_364502829_1IGX8UNbSxKtY1476bGncBckMNOe2LMt.jpg" alt="" width="50" height="54" class="d-inline-block">
                 Tickety
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -54,6 +54,9 @@
                     <li class="nav-item">
                         <a type="button" class="nav-link" data-bs-toggle="modal" data-bs-target="#exampleModal">Create A Ticket</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="/completed">Completed Tickets</a>
+                    </li>
                 </ul>
                 <li class="navbar navbar-dark bg-dark">
                     <a class="nav-link" id="grey" aria-current="page" href="/logout">Logout</a>
@@ -61,15 +64,7 @@
             </div>
         </div>
     </nav>
-    <!-- <div class="row">
-        <h1 id="title">Tickety</h1>
-    </div> -->
-    <div class="row">
-        <div class="col-9">
-            <h3>Welcome {{user.last_name}}, {{user.first_name}}</h3>
-        </div>
-        <!-- <div class="col-1 offset-2"><a class="btn btn-secondary" href="/logout">Logout</a></div> -->
-    </div>
+
     {% if messages %}
     <div class="alert alert-warning alert-dismissible fade show" role="alert">
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
@@ -81,7 +76,6 @@
         </ul>
     </div>
     {% endif %}
-    <hr>
     <!-- Button trigger modal
     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
         Create Ticket
@@ -102,24 +96,26 @@
         </thead>
         <tbody>
             {% for task in tasks %}
+            {% if task.completed == False %}
             <tr>
-                <td><a href="/task/{{task.id}}">{{task.task_name}}</a></td>
+                <td><a href="/task/{{task.id}}" class="links">{{task.task_name}}</a></td>
                 <td>{{task.description}}</td>
                 <td>{{task.hours}}</td>
                 <td>{{task.due}}</td>
-                <td><a href="/user/{{task.creator.id}}">{{task.creator}}</a></td>
+                <td><a href="/user/{{task.creator.id}}" class="links">{{task.creator}}</a></td>
                 <td>
                     {% for i in task.assigned.all %}
-                    <a href="/user/{{i.id}}">{{i.first_name}} {{i.last_name}}</a>
+                    <a href="/user/{{i.id}}" class="links">{{i.first_name}} {{i.last_name}}</a>
                     {% endfor %}
                 </td>
-                <td><a href="/task/assign/{{task.id}}" class="btn btn-primary">ASSIGN</a>
+                <td><a href="/task/assign/{{task.id}}" class="btn btn-primary">Assign</a>
                     {% if user.id == task.creator.id %}
                     <a href="/task/update/{{task.id}}" class="btn btn-warning">Edit</a>
-                    <a href="/{{task.id}}/delete" class="btn btn-danger">DELETE</a>
+                    <a href="/{{task.id}}/delete" class="btn btn-danger">Delete</a>
                     {% endif %}
                 </td>
             </tr>
+            {% endif %}
             {% endfor %}
         </tbody>
     </table>
@@ -142,22 +138,22 @@
             {% for task in assignedTasks %}
             {% if task.completed == False %}
             <tr>
-                <td><a href="/task/{{task.id}}">{{task.task_name}}</a></td>
+                <td><a href="/task/{{task.id}}" class="links">{{task.task_name}}</a></td>
                 <td>{{task.description}}</td>
                 <td>{{task.hours}}</td>
                 <td>{{task.due}}</td>
-                <td><a href="/user/{{task.creator.id}}">{{task.creator}}</a></td>
+                <td><a href="/user/{{task.creator.id}}" class="links">{{task.creator}}</a></td>
                 <td>
                     {% for i in task.assigned.all %}
-                    <a href="/user/{{i.id}}">{{i.first_name}} {{i.last_name}}</a>
+                    <a href="/user/{{i.id}}" class="links">{{i.first_name}} {{i.last_name}}</a>
                     {% endfor %}
                 </td>
-                <td><a href="/task/assign/{{task.id}}" class="btn btn-primary">ASSIGN</a>
+                <td><a href="/task/assign/{{task.id}}" class="btn btn-primary">Assign</a>
                     <a href="/drop/{{task.id}}" class="btn btn-secondary">Drop</a>
                     <a href="/task/{{task.id}}/complete" class="btn btn-success">Complete</a>
                     {% if user.id == task.creator.id %}
                     <a href="/task/update/{{task.id}}" class="btn btn-warning">Edit</a>
-                    <a href="/{{task.id}}/delete" class="btn btn-danger">DELETE</a>
+                    <a href="/{{task.id}}/delete" class="btn btn-danger">Delete</a>
                     {% endif %}
                 </td>
             </tr>
@@ -215,7 +211,7 @@
                                 <td><input type="text" name="task_name" id="" class="form-control"></td>
                             </tr>
                             <tr>
-                                <td><label class="form-label" for="description">Descriptiom</label></td>
+                                <td><label class="form-label" for="description">Description</label></td>
                                 <td><input type="text" name="description" id="" class="form-control"></td>
                             </tr>
                             <tr>

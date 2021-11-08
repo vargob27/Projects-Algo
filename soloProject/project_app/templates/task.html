@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+    
 <head>
     {% load static %}
     <meta charset="UTF-8">
@@ -17,7 +18,7 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
-            <a class="navbar-brand">
+            <a class="navbar-brand" id="grey">
                 <img src="https://t4.ftcdn.net/jpg/04/15/08/91/360_F_415089176_JDSJLUPmjw3w5vZ6MUQ9U0ZbTmnGioIr.jpg" alt="" width="50" height="54" class="d-inline-block">
                 Tickety
             </a>
@@ -52,6 +53,9 @@
                     <li class="nav-item">
                         <a type="button" class="nav-link" data-bs-toggle="modal" data-bs-target="#exampleModal">Create A Ticket</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="/completed">Completed Tickets</a>
+                    </li>
                 </ul>
                 <li class="navbar navbar-dark bg-dark">
                     <a class="nav-link" id="grey" aria-current="page" href="/logout">Logout</a>
@@ -59,13 +63,13 @@
             </div>
         </div>
     </nav>
-    <div class="row">
+    <!-- <div class="row">
         <h1 id="title">Tickety</h1>
     </div>
     <div class="row">
         <div class="col-1"><a class="btn btn-info" id="space" href="/success">Home</a></div>
         <div class="col-1 offset-10"><a class="btn btn-secondary" href="/logout">Logout</a></div>
-    </div>
+    </div> -->
     <table class="table table-dark">
         <tr>
             <td>Task Name:</td>
@@ -86,7 +90,7 @@
         <tr>
             <td>Assigned to:</td>
             <td>{% for user in task.assigned.all %}
-                <p><a href="/user/{{user.id}}">{{user.first_name}} {{user.last_name}}</a></p>
+                <p><a href="/user/{{user.id}}" class="links">{{user.first_name}} {{user.last_name}}</a></p>
                 {% endfor %}</td>
         </tr>
         <tr>
@@ -107,5 +111,44 @@
         <a class="btn btn-danger" href="/drop/{{task.id}}">Drop Task</a>
         {% endif %}
     {% endfor %}
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Create Ticket</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="/createtask" method="POST">
+                        {% csrf_token %}
+                        <table>
+                            <tr>
+                                <td><label class="form-label" for="task_name">Task Name</label></td>
+                                <td><input type="text" name="task_name" id="" class="form-control"></td>
+                            </tr>
+                            <tr>
+                                <td><label class="form-label" for="description">Description</label></td>
+                                <td><input type="text" name="description" id="" class="form-control"></td>
+                            </tr>
+                            <tr>
+                                <td><label class="form-label" for="hours">Projected Hours</label></td>
+                                <td><input type="number" name="hours" id="" class="form-control"></td>
+                            </tr>
+                            <tr>
+                                <td><label class="form-label" for="due">Due Date</label></td>
+                                <td><input type="date" name="due" id="" class="form-control"></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td><input type="submit" value="Create"></td>
+                            </tr>
+                        </table>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

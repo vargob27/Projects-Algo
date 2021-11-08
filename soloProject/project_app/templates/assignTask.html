@@ -11,42 +11,159 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        crossorigin="anonymous"></script>
 </head>
 
 <body>
-    <div class="row">
-        <h1 id="title">Tickety</h1>
-    </div>
-    <div class="row">
-        <div class="col-1"><a class="btn btn-info" id="space" href="/success">Home</a></div>
-        <div class="col-1 offset-10"><a class="btn btn-secondary" href="/logout">Logout</a></div>
-    </div>
-    <p>Task Name: {{task.task_name}}</p>
-    <p>Description: {{task.description}}</p>
-    <p>Hours: {{task.hours}}</p>
-    <p>Due Date:{{task.due}}</p>
-    <p>Assigned to: {{task.assigned}}</p>
-    <p>Creator: {{task.creator}}</p>
-    <p>Created at: {{task.created_at}}</p>
-    <p>Updated at: {{task.updated_at}}</p>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" id="grey">
+                <img src="https://t4.ftcdn.net/jpg/04/15/08/91/360_F_415089176_JDSJLUPmjw3w5vZ6MUQ9U0ZbTmnGioIr.jpg"
+                    alt="" width="50" height="54" class="d-inline-block">
+                Tickety
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link">Welcome {{loggedIn.last_name}}, {{loggedIn.first_name}}</a>
+                    </li>   
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/success">Home</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            Users
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            {% for user in users %}
+                            <li><a class="dropdown-item" href="/user/{{user.id}}">{{user.last_name}},
+                                    {{user.first_name}}</a></li>
+                            {% endfor %}
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item" href="/user/{{loggedIn.id}}">Go to Your Profile</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a type="button" class="nav-link" data-bs-toggle="modal" data-bs-target="#exampleModal">Create A
+                            Ticket</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="/completed">Completed Tickets</a>
+                    </li>
+                </ul>
+                <li class="navbar navbar-dark bg-dark">
+                    <a class="nav-link" id="grey" aria-current="page" href="/logout">Logout</a>
+                </li>
+            </div>
+        </div>
+    </nav>
 
-    <form action="/task/{{task.id}}/assign" method="POST">
-        {% csrf_token %}
-        <table>
-            <td><label class="form-label" for="email">User</label></td>
-            <td>
-                <select name="email" id="" class="form-control">
-                    {% for user in users %}
-                    <option value="{{user.email}}">{{user.last_name}}, {{user.first_name}}</option>
-                    {% endfor %}
-                </select>
+    <table class="table table-dark">
+        <tr>
+            <td>Task Name:</td>
+            <td>{{task.task_name}}</td>
+        </tr>
+        <tr>
+            <td>Description:</td>
+            <td>{{task.description}}</td>
+        </tr>
+        <tr>
+            <td>Hours:</td>
+            <td>{{task.hours}}</td>
+        </tr>
+        <tr>
+            <td>Due Date:</td>
+            <td>{{task.due}}</td>
+        </tr>
+        <tr>
+            <td>Assigned to:</td>
+            <td>{% for user in task.assigned.all %}
+                <p><a href="/user/{{user.id}}" class="links">{{user.first_name}} {{user.last_name}}</a></p>
+                {% endfor %}
             </td>
-            </tr>
-            <tr>
-                <td><input type="submit" value="Assign"></td>
-            </tr>
-        </table>
-    </form>
+        </tr>
+        <tr>
+            <td>Creator:</td>
+            <td>{{task.creator}}</td>
+        </tr>
+        <tr>
+            <td>Created at:</td>
+            <td>{{task.created_at}}</td>
+        </tr>
+        <tr>
+            <td>Updated at:</td>
+            <td>{{task.updated_at}}</td>
+        </tr>
+    </table>
+    <h3 id="center">Assign User</h3>
+    <div class="col-3 offset-5">
+        <form action="/task/{{task.id}}/assign" method="POST">
+            {% csrf_token %}
+            <table>
+                <td><label class="form-label" for="email">Assign to: </label></td>
+                <td>
+                    <select name="email" id="" class="form-control">
+                        {% for user in users %}
+                        <option value="{{user.email}}">{{user.last_name}}, {{user.first_name}}</option>
+                        {% endfor %}
+                    </select>
+                </td>
+                </tr>
+                <tr>
+                    <td><input type="submit" value="Assign"></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Create Ticket</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="/createtask" method="POST">
+                        {% csrf_token %}
+                        <table>
+                            <tr>
+                                <td><label class="form-label" for="task_name">Task Name</label></td>
+                                <td><input type="text" name="task_name" id="" class="form-control"></td>
+                            </tr>
+                            <tr>
+                                <td><label class="form-label" for="description">Description</label></td>
+                                <td><input type="text" name="description" id="" class="form-control"></td>
+                            </tr>
+                            <tr>
+                                <td><label class="form-label" for="hours">Projected Hours</label></td>
+                                <td><input type="number" name="hours" id="" class="form-control"></td>
+                            </tr>
+                            <tr>
+                                <td><label class="form-label" for="due">Due Date</label></td>
+                                <td><input type="date" name="due" id="" class="form-control"></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td><input type="submit" value="Create"></td>
+                            </tr>
+                        </table>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>

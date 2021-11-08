@@ -19,8 +19,8 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
-            <a class="navbar-brand">
-                <img src="https://t4.ftcdn.net/jpg/04/15/08/91/360_F_415089176_JDSJLUPmjw3w5vZ6MUQ9U0ZbTmnGioIr.jpg" alt="" width="50" height="54" class="d-inline-block">
+            <a class="navbar-brand" id="grey">
+                <img src="data:image/png;base64,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" alt="" width="40" height="40" class="d-inline-block">
                 Tickety
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -31,7 +31,7 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link">Welcome {{user.last_name}}, {{user.first_name}}</a>
+                        <a class="nav-link">Welcome {{loggedIn.last_name}}, {{loggedIn.first_name}}</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" aria-current="page" href="/success">Home</a>
@@ -48,11 +48,14 @@
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
-                            <li><a class="dropdown-item" href="/user/{{user.id}}">Go to Your Profile</a></li>
+                            <li><a class="dropdown-item" href="/user/{{loggedIn.id}}">Go to Your Profile</a></li>
                         </ul>
                     </li>
                     <li class="nav-item">
                         <a type="button" class="nav-link" data-bs-toggle="modal" data-bs-target="#exampleModal">Create A Ticket</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="/completed">Completed Tickets</a>
                     </li>
                 </ul>
                 <li class="navbar navbar-dark bg-dark">
@@ -61,13 +64,9 @@
             </div>
         </div>
     </nav>
-    <div class="row">
-        <h1 id="title">Tickety</h1>
-    </div>
-    <div class="row">
-        <div class="col-1"><a class="btn btn-info" id="space" href="/success">Home</a></div>
-        <div class="col-1 offset-10"><a class="btn btn-secondary" href="/logout">Logout</a></div>
-    </div>
+    {% if user.id == loggedIn.id %}
+    <a class="btn btn-warning" href="/user/edit/{{user.id}}">Edit Profile</a>
+    {% endif %}
     <div class="opac">
         <div class="row">
             <div class="bold">First Name: </div>
@@ -98,6 +97,7 @@
             <div class="normal">{{user.assigned_tasks.count}}</div>
         </div>
     </div>
+    
     {% if userTickets %}
     <h1>Created Tickets</h1>
     <table class="table table-dark">
@@ -107,24 +107,29 @@
                 <th>Description</th>
                 <th>Hours</th>
                 <th>Due Date</th>
-                <th>Submitted By</th>
+                <th>Assigned Users</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
             {% for task in userTickets %}
             <tr>
-                <td><a href="/task/{{task.id}}">{{task.task_name}}</a></td>
+                <td><a href="/task/{{task.id}}" class="links">{{task.task_name}}</a></td>
                 <td>{{task.description}}</td>
                 <td>{{task.hours}}</td>
                 <td>{{task.due}}</td>
-                <td><a href="/user/{{task.creator.id}}">{{task.creator}}</a></td>
-                <td><a href="/task/assign/{{task.id}}" class="btn btn-primary">ASSIGN</a>
-                    {% if user.id in task.assigned.id %}
+                <td>
+                    {% for i in task.assigned.all %}
+                    <a href="/user/{{i.id}}" class="links">{{i.first_name}} {{i.last_name}}</a>
+                    {% endfor %}
+                </td>
+                <td><a href="/task/assign/{{task.id}}" class="btn btn-primary">Assign</a>
+                    {% if user.id == task.assigned.id %}
                     <a href="/task/{{task.id}}/drop">Drop</a>
                     {% endif %}
                     {% if user.id == task.creator.id %}
-                    <a href="/{{task.id}}/delete" class="btn btn-danger">DELETE</a>
+                    <a href="/task/update/{{task.id}}" class="btn btn-warning">Edit</a>
+                    <a href="/{{task.id}}/delete" class="btn btn-danger">Delete</a>
                     {% endif %}
                 </td>
             </tr>
@@ -147,28 +152,66 @@
         </thead>
         <tbody>
             {% for task in assignedTasks %}
+            {% if task.completed == False %}
             <tr>
-                <td><a href="/task/{{task.id}}">{{task.task_name}}</a></td>
+                <td><a href="/task/{{task.id}}" class="links">{{task.task_name}}</a></td>
                 <td>{{task.description}}</td>
                 <td>{{task.hours}}</td>
                 <td>{{task.due}}</td>
-                <td><a href="/user/{{task.creator.id}}">{{task.creator}}</a></td>
-                <td><a href="/task/assign/{{task.id}}" class="btn btn-primary">ASSIGN</a>
+                <td><a href="/user/{{task.creator.id}}" class="links">{{task.creator}}</a></td>
+                <td><a href="/task/assign/{{task.id}}" class="btn btn-primary">Assign</a>
                     <a href="/task/{{task.id}}/drop" class="btn btn-secondary">Drop</a>
                     <a href="/task/{{task.id}}/complete" class="btn btn-success">Complete</a>
                     {% if user.id == task.creator.id %}
                     <a href="/task/update/{{task.id}}" class="btn btn-warning">Edit</a>
-                    <a href="/{{task.id}}/delete" class="btn btn-danger">DELETE</a>
+                    <a href="/{{task.id}}/delete" class="btn btn-danger">Delete</a>
                     {% endif %}
                 </td>
             </tr>
+            {% endif %}
             {% endfor %}
         </tbody>
     </table>
     {% endif %}
-    {% if user.id == loggedIn %}
-    <a class="btn btn-warning" href="/user/edit/{{user.id}}">Edit Profile</a>
-    {% endif %}
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Create Ticket</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="/createtask" method="POST">
+                        {% csrf_token %}
+                        <table>
+                            <tr>
+                                <td><label class="form-label" for="task_name">Task Name</label></td>
+                                <td><input type="text" name="task_name" id="" class="form-control"></td>
+                            </tr>
+                            <tr>
+                                <td><label class="form-label" for="description">Description</label></td>
+                                <td><input type="text" name="description" id="" class="form-control"></td>
+                            </tr>
+                            <tr>
+                                <td><label class="form-label" for="hours">Projected Hours</label></td>
+                                <td><input type="number" name="hours" id="" class="form-control"></td>
+                            </tr>
+                            <tr>
+                                <td><label class="form-label" for="due">Due Date</label></td>
+                                <td><input type="date" name="due" id="" class="form-control"></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td><input type="submit" value="Create"></td>
+                            </tr>
+                        </table>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>

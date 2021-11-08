@@ -1,25 +1,33 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages, admin
 from .models import *
+from datetime import datetime
 import bcrypt
 
 def index(request):
+    if 'user_id' in request.session:
+        return redirect('/success')
     return render(request, 'login.html')
 
 def success(request):
     if 'user_id' not in request.session:
         return redirect('/')
+    
+    now = datetime.today().strftime('%b. %d, %Y')
     this_user = User.objects.filter(id=request.session['user_id'])
     sorted_tasks = Task.objects.all().order_by('due')
     context = {
         'user': this_user[0],
         'tasks': sorted_tasks,
         'assignedTasks': this_user[0].assigned_tasks.all(),
-        'users': User.objects.all()
+        'users': User.objects.all(),
+        'now': now
     }
     return render(request, 'home.html', context)
 
 def completed(request):
+    if 'user_id' not in request.session:
+        return redirect('/')
     this_user = User.objects.filter(id=request.session['user_id'])
     sorted_tasks = Task.objects.all().order_by('due')
     context = {
@@ -67,11 +75,17 @@ def logout(request):
     return redirect('/')
 
 def create(request):
+    if 'user_id' not in request.session:
+        return redirect('/')
+    now = datetime.today().strftime('%Y-%m-%d')
     errors = Task.objects.task_validator(request.POST)
     if len(errors) != 0:
             for key, value in errors.items():
                 messages.error(request, value)
             return redirect('/success')
+    if request.POST['due'] < now:
+        messages.error(request, 'Date cannot be in the past')
+        return redirect('/success')
     Task.objects.create(
         task_name = request.POST['task_name'],
         description = request.POST['description'],
@@ -79,9 +93,12 @@ def create(request):
         due = request.POST['due'],
         creator = User.objects.get(id=request.session['user_id'])
     )
+    print(request.POST['due'])
     return redirect('/success')
 
 def delete_task(request, task_id):
+    if 'user_id' not in request.session:
+        return redirect('/')
     to_delete = Task.objects.get(id=task_id)
     if request.session['user_id'] != to_delete.creator.id:
         messages.error(request, 'You are not the creator of the task you are trying to delete!')
@@ -90,17 +107,27 @@ def delete_task(request, task_id):
     return redirect('/success')
 
 def edit_task(request, task_id):
+    if 'user_id' not in request.session:
+        return redirect('/')
     context = {
-        'task': Task.objects.get(id=task_id)
+        'task': Task.objects.get(id=task_id),
+        'loggedIn': User.objects.get(id=request.session['user_id']),
+        'users': User.objects.all(),
     }
     return render(request, 'editTask.html', context)
 
 def update_task(request, task_id):
+    if 'user_id' not in request.session:
+        return redirect('/')
+    now = datetime.today().strftime('%Y-%m-%d')
     errors = Task.objects.update_task_validator(request.POST)
     if len(errors) != 0:
             for key, value in errors.items():
                 messages.error(request, value)
             return redirect(f'/task/update/{task_id}')
+    if request.POST['due'] < now:
+        messages.error(request, 'Date cannot be in the past')
+        return redirect(f'/task/update/{task_id}')
     to_update = Task.objects.get(id=task_id)
     to_update.task_name = request.POST['task_name']
     to_update.description = request.POST['description']
@@ -110,28 +137,37 @@ def update_task(request, task_id):
     return redirect('/success')
 
 def complete_task(request, task_id):
+    if 'user_id' not in request.session:
+        return redirect('/')
     task = Task.objects.get(id=task_id)
     task.completed = True
     task.save()
     return redirect('/success')
 
 def task(request, task_id):
+    if 'user_id' not in request.session:
+        return redirect('/')
     context = {
         'user': User.objects.get(id=request.session['user_id']),
         'task': Task.objects.get(id=task_id),
-        'loggedIn': request.session['user_id'],
+        'loggedIn': User.objects.get(id=request.session['user_id']),
         'users': User.objects.all()
     }
     return render(request, 'task.html', context)
 
 def taskAssignment(request, task_id):
+    if 'user_id' not in request.session:
+        return redirect('/')
     context = {
         'users': User.objects.all(),
-        'task': Task.objects.get(id=task_id)
+        'task': Task.objects.get(id=task_id),
+        'loggedIn': User.objects.get(id=request.session['user_id']),
     }
     return render(request, 'assignTask.html', context)
 
 def assign_task(request, task_id):
+    if 'user_id' not in request.session:
+        return redirect('/')
     taskToAssign = Task.objects.get(id=task_id)
     userToAssign = User.objects.get(email=request.POST['email'])
     taskToAssign.assigned.add(userToAssign)
@@ -139,6 +175,8 @@ def assign_task(request, task_id):
     return redirect('/success')
 
 def user_profile(request, user_id):
+    if 'user_id' not in request.session:
+        return redirect('/')
     user = User.objects.get(id=user_id)
     context = {
         'user': User.objects.get(id=user_id),
@@ -150,16 +188,21 @@ def user_profile(request, user_id):
     return render(request, 'profile.html', context)
 
 def edit_profile(request, user_id):
+    if 'user_id' not in request.session:
+        return redirect('/')
     checkID = request.session['user_id']
     if checkID != user_id:
         return redirect('/success')
     context = {
         'user': User.objects.get(id=user_id),
-        'loggedIn': request.session['user_id']
+        'loggedIn': request.session['user_id'],
+        'users': User.objects.all(),
     }
     return render(request, 'editProfile.html', context)
 
 def update_profile(request, user_id):
+    if 'user_id' not in request.session:
+        return redirect('/')
     errors = User.objects.update_validator(request.POST)
     if len(errors) > 0:
         for key, value in errors.items():
@@ -176,10 +219,9 @@ def update_profile(request, user_id):
     return redirect(f'/user/{user_id}')
 
 def drop_task(request, task_id):
+    if 'user_id' not in request.session:
+        return redirect('/')
     loggedIN = request.session['user_id']
     task = Task.objects.get(id=task_id)
     task.assigned.remove(loggedIN)
     return redirect('/success')
-
-def test(request):
-    return render(request, 'test.html')
