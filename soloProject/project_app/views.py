@@ -6,13 +6,12 @@ import bcrypt
 
 def index(request):
     if 'user_id' in request.session:
-        return redirect('/success')
+        return redirect('/home')
     return render(request, 'login.html')
 
 def success(request):
     if 'user_id' not in request.session:
         return redirect('/')
-    
     now = datetime.today().strftime('%b. %d, %Y')
     this_user = User.objects.filter(id=request.session['user_id'])
     sorted_tasks = Task.objects.all().order_by('due')
@@ -55,7 +54,7 @@ def register(request):
         )
     # create session
         request.session['user_id'] = new_user.id
-        return redirect('/success')
+        return redirect('/home')
     return redirect('/')
 
 def login(request):
@@ -67,7 +66,7 @@ def login(request):
             return redirect('/')
         this_user = User.objects.filter(email=request.POST['email'])
         request.session['user_id'] = this_user[0].id
-        return redirect('/success')
+        return redirect('/home')
     return redirect('/')
 
 def logout(request):
@@ -82,10 +81,10 @@ def create(request):
     if len(errors) != 0:
             for key, value in errors.items():
                 messages.error(request, value)
-            return redirect('/success')
+            return redirect('/home')
     if request.POST['due'] < now:
         messages.error(request, 'Date cannot be in the past')
-        return redirect('/success')
+        return redirect('/home')
     Task.objects.create(
         task_name = request.POST['task_name'],
         description = request.POST['description'],
@@ -94,7 +93,7 @@ def create(request):
         creator = User.objects.get(id=request.session['user_id'])
     )
     print(request.POST['due'])
-    return redirect('/success')
+    return redirect('/home')
 
 def delete_task(request, task_id):
     if 'user_id' not in request.session:
@@ -102,9 +101,9 @@ def delete_task(request, task_id):
     to_delete = Task.objects.get(id=task_id)
     if request.session['user_id'] != to_delete.creator.id:
         messages.error(request, 'You are not the creator of the task you are trying to delete!')
-        return redirect('/success')
+        return redirect('/home')
     to_delete.delete()
-    return redirect('/success')
+    return redirect('/home')
 
 def edit_task(request, task_id):
     if 'user_id' not in request.session:
@@ -134,7 +133,7 @@ def update_task(request, task_id):
     to_update.hours = request.POST['hours']
     to_update.due = request.POST['due']
     to_update.save()
-    return redirect('/success')
+    return redirect('/home')
 
 def complete_task(request, task_id):
     if 'user_id' not in request.session:
@@ -142,7 +141,7 @@ def complete_task(request, task_id):
     task = Task.objects.get(id=task_id)
     task.completed = True
     task.save()
-    return redirect('/success')
+    return redirect('/home')
 
 def task(request, task_id):
     if 'user_id' not in request.session:
@@ -172,7 +171,7 @@ def assign_task(request, task_id):
     userToAssign = User.objects.get(email=request.POST['email'])
     taskToAssign.assigned.add(userToAssign)
 
-    return redirect('/success')
+    return redirect('/home')
 
 def user_profile(request, user_id):
     if 'user_id' not in request.session:
@@ -192,7 +191,7 @@ def edit_profile(request, user_id):
         return redirect('/')
     checkID = request.session['user_id']
     if checkID != user_id:
-        return redirect('/success')
+        return redirect('/home')
     context = {
         'user': User.objects.get(id=user_id),
         'loggedIn': request.session['user_id'],
@@ -224,4 +223,4 @@ def drop_task(request, task_id):
     loggedIN = request.session['user_id']
     task = Task.objects.get(id=task_id)
     task.assigned.remove(loggedIN)
-    return redirect('/success')
+    return redirect('/home')
