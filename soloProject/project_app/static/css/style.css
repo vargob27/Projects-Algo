@@ -51,3 +51,15 @@ nav {
     margin-right: 2%;
 }
 
+.modal-body {
+    background-image: url(https://i.pinimg.com/originals/af/a7/a3/afa7a37361cab6d7a729b669dae6757b.jpg);
+    background-color: #cccccc;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.modal-header {
+    background-image: url(https://www.pngmagic.com/product_images/dark-gray-solid-background.jpg);
+    background-color: #cccccc;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
